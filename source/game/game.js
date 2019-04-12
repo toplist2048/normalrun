@@ -12,6 +12,7 @@ var
 	
 	level_width = 64,
 	level_height = 64,
+	wall_height = 8,
 	level_data = new Uint8Array(level_width * level_height),
 
 	cpus_total = 0,
@@ -26,6 +27,7 @@ var
 
 function load_image(name, callback) {
 	var t = new Image();
+	t.crossOrigin = "anonymous";
 	t.src = 'm/'+name+'.png';
 	t.onload = callback;
 }
@@ -75,7 +77,7 @@ function load_level(id, callback) {
 								: array_rand([1,1,1,1,1,3,3,2,5,5,5,5,5,5,7,7,6]); // floor
 
 
-					if (tile > 7) { // walls, 8 - 16
+					if (tile > wall_height-1) { // walls, 8 - 16
 						_gl.push_block(x * s, y * s, s, s/2, tile-1);
 					}
 
@@ -124,7 +126,7 @@ function load_level(id, callback) {
 		}
 
 		_gl.camera_x = -entity_player.x;
-		_gl.camera_y = -300;
+		_gl.camera_y = -500;
 		_gl.camera_z = -entity_player.z - 100;
 
 		level_num_verts = num_verts;
@@ -195,10 +197,10 @@ function game_tick() {
 		for (var j = i+1; j < entities.length; j++) {
 			e2 = entities[j];
 			if(!(
-				e1.x >= e2.x + 9 ||
-				e1.x + 9 <= e2.x ||
-				e1.z >= e2.z + 9 ||
-				e1.z + 9 <= e2.z
+				e1.x >= e2.x + s+1 ||
+				e1.x + s+1 <= e2.x ||
+				e1.z >= e2.z + s+1 ||
+				e1.z + s+1 <= e2.z
 			)) {
 				e1._check(e2);
 				e2._check(e1);

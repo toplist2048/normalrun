@@ -1,16 +1,22 @@
 
-var s = 16;
+
+var ds = 3;
+var s = Math.pow(2, ds);
 
 var sprite_pixels = 128; // sprite is 128 width
 var level_pixels = 64; //level is 64x64 pixels
 
 class GL {
     constructor(element) {
-    	this.gl = element.getContext('webgl') || element.getContext('experimental-webgl'),
+
+
+		this.gl = element.getContext('webgl') || element.getContext('experimental-webgl'),
+  
 		this.gl.enable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
-		this.gl.viewport(0,0,element.width,element.height);
+		console.log(this.gl.canvas.width);
+		this.gl.viewport(0,0, this.gl.canvas.width, this.gl.canvas.height);
 
   		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.gl.createBuffer());
 
@@ -40,8 +46,10 @@ class GL {
 		this.gl.vertexAttribPointer(location, size, this.gl.FLOAT, false, vertex_size*4, offset*4);
 	}
 
+	
+	
 	perspectiveMatrix(fieldOfViewInRadians, aspectRatio, near, far) {
-	  var f = 1.0 / Math.tan(fieldOfViewInRadians / 2);;
+	  var f = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfViewInRadians);
 	  var rangeInv = 1 / (near - far);
 	 
 	  return [
@@ -69,8 +77,8 @@ class GL {
 				0,.707,.707,0, \
 				0,-.707,.707,0,  \
 				0,-22.627,-22.627,1);" + // view
-			"const mat4 projection=mat4("+ this.perspectiveMatrix(Math.PI * 0.5, 
-			  window.innerWidth / window.innerHeight, 1, 50000) + ");"+ // projection
+			"const mat4 projection=mat4("+ this.perspectiveMatrix(Math.PI * 0.45, 
+			  window.innerWidth / window.innerHeight, 1, 500) + ");"+ // projection
 			"void main(void){" +
 				"varying_light=vec3(1.0,1.0,1.0);" + // white color
 				"for(int i=0; i<"+this.max_lights+"; i++) {"+
@@ -103,7 +111,6 @@ class GL {
 				"}" +
 				"gl_FragColor.rgb=floor(gl_FragColor.rgb*99.9999)/99.9999;" + // reduce colors to ~256
 			"}";
-		console.log(vertex_shader);
 
 		var shader_program = this.gl.createProgram();
 		this.gl.attachShader(shader_program, this.compile_shader(this.gl.VERTEX_SHADER, vertex_shader));

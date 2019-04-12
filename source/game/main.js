@@ -1,3 +1,12 @@
+		var canvas = document.getElementById("c");
+		var width = canvas.clientWidth;
+		var height = canvas.clientHeight;
+		if (canvas.width != width ||
+		  canvas.height != height) {
+			canvas.width = width;
+			canvas.height = height;
+	    }
+
 var _gl = new GL(c);
 
 terminal.write_text(['INITIATING AUDIO...'], step2);

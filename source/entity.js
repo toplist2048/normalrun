@@ -45,10 +45,10 @@ class entity_t {
 	}
 
 	_collides(x, z) {
-		return level_data[(x >> 3) + (z >> 3) * level_width] > s || // top left
-			level_data[((x + s) >> 3) + (z >> 3) * level_width] > s || // top right
-			level_data[((x + s) >> 3) + ((z+4) >> 3) * level_width] > s || // bottom right
-			level_data[(x >> 3) + ((z+4) >> 3) * level_width] > s; // bottom left
+		return level_data[(x >> ds) + (z >> ds) * level_width] >= wall_height || // top left
+			level_data[((x + s) >> ds) + (z >> ds) * level_width] >= wall_height || // top right
+			level_data[((x + s) >> ds) + ((z+s/2) >> ds) * level_width] >= wall_height || // bottom right
+			level_data[(x >> ds) + ((z+s/2) >> ds) * level_width] >= wall_height; // bottom left
 	}
 
 	_spawn_particles(amount) {

@@ -18,7 +18,7 @@ class entity_spider_t extends entity_t {
 		t._select_target_counter -= time_elapsed;
 
 		// select new target after a while
-		if (t._select_target_counter < 0 && dist < 64) {
+		if (t._select_target_counter < 0 && dist < s*s) {
 			t._select_target_counter = Math.random() * 0.5 + 0.3;
 			t._target_x = entity_player.x;
 			t._target_z = entity_player.z;

@@ -19,12 +19,12 @@ class entity_sentry_t extends entity_t {
 
 		// select new target after a while
 		if (t._select_target_counter < 0) {
-			if (dist < 64) {
+			if (dist < s*s) {
 				t._select_target_counter = Math.random() * 0.5 + 0.3;
 				t._target_x = entity_player.x;
 				t._target_z = entity_player.z;
 			}
-			if (dist < 48) {
+			if (dist < (s-2)*s) {
 				var angle = Math.atan2(
 					entity_player.z - this.z,
 					entity_player.x - this.x
@@ -34,9 +34,9 @@ class entity_sentry_t extends entity_t {
 		}
 		
 		// set velocity towards target
-		if (dist > 24) {
-			t.ax = Math.abs(txd) > 2 ? (txd > 0 ? -48 : 48) : 0;
-			t.az = Math.abs(tzd) > 2 ? (tzd > 0 ? -48 : 48) : 0;
+		if (dist > (s-4)*s) {
+			t.ax = Math.abs(txd) > 2 ? (txd > 0 ? -(s-2)*s : (s-2)*s) : 0;
+			t.az = Math.abs(tzd) > 2 ? (tzd > 0 ? -(s-2)*s : (s-2)*s) : 0;
 		} else {
 			t.ax = t.az = 0;
 		}
